@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Question</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #ffeef2;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        h1 {
+            color: #d63384;
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        #yes-btn {
+            background-color: #ff4d6d;
+            color: white;
+            transition: transform 0.2s;
+        }
+
+        #yes-btn:hover {
+            transform: scale(1.1);
+        }
+
+        #no-btn {
+            background-color: #6c757d;
+            color: white;
+            position: relative;
+            z-index: 999;
+            /* No transition makes it jump instantly so they can't catch it */
+        }
+
+        .heart {
+            font-size: 170px;
+            color: #ff4d6d;
+            animation: beat 1s infinite;
+        }
+
+        @keyframes beat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .hidden { display: none; }
+
+        #success-msg {
+            font-size: 2rem;
+            color: #d63384;
+        }
+
+        img {
+            max-width: 300px;
+            border-radius: 20px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="main-content">
+        <div class="heart">❤️</div>
+        <h1>Divine, Will you be my Valentine?</h1>
+
+        <div class="container">
+            <div class="buttons">
+                <button id="yes-btn">YES!</button>
+                <button id="no-btn">No!</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="success-msg" class="hidden">
+        <h1>I thought as much!😊 See you on the 14th! 🥰</h1>
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHY5eWVxeG55eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/KztT2c4u8mYYUiMKdJ/giphy.gif" alt="Happy Cat">
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('no-btn');
+        const yesBtn = document.getElementById('yes-btn');
+        const mainContent = document.getElementById('main-content');
+        const successMsg = document.getElementById('success-msg');
+
+        let count = 0;
+        const maxAttempts = 7;
+
+        const moveButton = () => {
+            if (count < maxAttempts) {
+                // Generate random coordinates
+                const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+                const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+
+                // Set position to fixed and move it
+                noBtn.style.position = 'fixed';
+                noBtn.style.left = `${Math.max(10, Math.min(x, window.innerWidth - 100))}px`;
+                noBtn.style.top = `${Math.max(10, Math.min(y, window.innerHeight - 50))}px`;
+
+                count++;
+
+                // Fun text updates
+                if (count === 2) noBtn.innerText = "Wait, what?😲";
+                if (count === 4) noBtn.innerText = "You really want to say No?😨";
+                if (count === 6) noBtn.innerText = "Are you serious right now?🙄";
+            } else {
+                // Delete the button after 7 attempts
+                noBtn.style.display = 'none';
+            }
+        };
+
+        // Listen for both mouse hover and actual clicks
+        noBtn.addEventListener('mouseover', moveButton);
+        noBtn.addEventListener('click', moveButton);
+
+        // Success logic with Confetti
+        yesBtn.addEventListener('click', () => {
+            mainContent.classList.add('hidden');
+            successMsg.classList.remove('hidden');
+
+            // Launch confetti!
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#ff4d6d', '#d63384', '#ff8fa3']
+            });
+        });
+    </script>
+
+</body>
+</html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -71,11 +72,20 @@
         }
 
         @keyframes beat {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
         }
 
-        .hidden { display: none; }
+        .hidden {
+            display: none;
+        }
 
         #success-msg {
             font-size: 2rem;
@@ -89,11 +99,12 @@
         }
     </style>
 </head>
+
 <body>
 
     <div id="main-content">
         <div class="heart">❤️</div>
-        <h1>Divine, Will you be my Valentine?</h1>
+        <h1>Ms. Divine, Will you be my Val?</h1>
 
         <div class="container">
             <div class="buttons">
@@ -104,8 +115,9 @@
     </div>
 
     <div id="success-msg" class="hidden">
-        <h1>I thought as much!😊 See you on the 14th! 🥰</h1>
-        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHY5eWVxeG55eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/KztT2c4u8mYYUiMKdJ/giphy.gif" alt="Happy Cat">
+        <h1>I thought as much!😊<br> See you on the 14th! 🥰</h1>
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHY5eWVxeG55eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/KztT2c4u8mYYUiMKdJ/giphy.gif"
+            alt="Happy Cat">
     </div>
 
     <script>
@@ -117,39 +129,52 @@
         let count = 0;
         const maxAttempts = 7;
 
+        // Array of messages for the Yes button to cycle through
+        const yesMessages = [
+            "Say Yes Now!",
+            "Click Yes!",
+            "See Yes here now!",
+            "Just click it! 😉",
+            "Don't be shy!",
+            "Over here!",
+            "Yes is all you got!"
+        ];
+
         const moveButton = () => {
             if (count < maxAttempts) {
-                // Generate random coordinates
+                // 1. Move the No button
                 const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
                 const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
 
-                // Set position to fixed and move it
                 noBtn.style.position = 'fixed';
                 noBtn.style.left = `${Math.max(10, Math.min(x, window.innerWidth - 100))}px`;
                 noBtn.style.top = `${Math.max(10, Math.min(y, window.innerHeight - 50))}px`;
 
+                // 2. Change the Yes button text
+                yesBtn.innerText = yesMessages[count] || "Yes!";
+
                 count++;
 
-                // Fun text updates
-                if (count === 2) noBtn.innerText = "Wait, what?😲";
-                if (count === 4) noBtn.innerText = "You really want to say No?😨";
-                if (count === 6) noBtn.innerText = "Are you serious right now?🙄";
+                // 3. Optional: Change No button text too
+                if (count === 3) noBtn.innerText = "Error 404";
+                if (count === 5) noBtn.innerText = "Try again!";
+
             } else {
-                // Delete the button after 7 attempts
+                // 4. No button disappears
                 noBtn.style.display = 'none';
+                // 5. Final Yes button message
+                yesBtn.innerText = "Yes is all you got, Just click!😘";
+                yesBtn.style.transform = "scale(1.5)"; // Make it slightly bigger for emphasis
             }
         };
 
-        // Listen for both mouse hover and actual clicks
         noBtn.addEventListener('mouseover', moveButton);
         noBtn.addEventListener('click', moveButton);
 
-        // Success logic with Confetti
         yesBtn.addEventListener('click', () => {
             mainContent.classList.add('hidden');
             successMsg.classList.remove('hidden');
 
-            // Launch confetti!
             confetti({
                 particleCount: 150,
                 spread: 70,
